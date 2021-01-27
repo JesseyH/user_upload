@@ -4,7 +4,7 @@ require 'user.php';
 require 'database.php';
     
 //short options for clo
-$shortopts .= "u:";     // postgres user option
+$shortopts = "u:";     // postgres user option
 $shortopts .= "p:";     // postgres password option
 $shortopts .= "h:";     // postgres host option
 
@@ -31,10 +31,14 @@ if ((isset($options['u'])) && strpos($options['u'][0], "-") === 0){
     $db_user = $options['u'];
 }
 
-if ((isset($options['p'])) && strpos($options['p'][0], "-") === 0){
-    echo "database password cannot start with a dash!\n";
-} else {
-    $db_pass = $options['p'];
+if ((isset($options['p']))) {
+    if (strlen($options['p']) === 0) {
+        $db_pass = $options['p'];
+    } else if (strpos($options['p'][0], "-") === 0) {
+        echo "database password cannot start with a dash!\n";
+    } else {
+        $db_pass = $options['p'];
+    }
 }
 
 if ((isset($options['h'])) && strpos($options['h'][0], "-") === 0){
@@ -43,11 +47,14 @@ if ((isset($options['h'])) && strpos($options['h'][0], "-") === 0){
     $db_host = $options['h'];
 }
 
+    
+//main code 
 if (isset($options['help'])) {
     echo "help commands\n";
 } else if (isset($options['create_table'])) {
     if ($dbSet) {
-        echo "We're only going to run the table create\n";
+        $database = new Database_connect($db_user, $db_pass, $db_host);
+        $database->createTable();
     } else {
         if (!isset($db_user)) {
             echo "database user is not set!\n";
