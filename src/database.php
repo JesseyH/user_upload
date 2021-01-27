@@ -21,8 +21,5 @@ class Database_connect
 
 
 $database = new Database_connect("jessey", "", "localhost");
-    
-    createtable() {
-        
-    }
+
 
