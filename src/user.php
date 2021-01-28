@@ -34,14 +34,18 @@ class User
      */
     private function sanitize() {
         // remove non letters and white spaces from names and have only the leading letter capitalized
-        $this->fname = str_replace('/\s+/', '', preg_replace('/\PL/u', '', $this->fname));
+        $this->fname = str_replace('/\s/', '', preg_replace("/[^A-Za-z0-9']/", '', $this->fname));
+        $this->fname = str_replace("'", "''", $this->fname);
         $this->fname = ucfirst(strtolower($this->fname));
         
-        $this->lname = str_replace('/\s+/', '', preg_replace('/\PL/u', '', $this->lname));
+        $this->lname = str_replace('/\s/', '', preg_replace("/[^A-Za-z0-9']/", '', $this->lname));
+        $this->lname = str_replace("'", "''", $this->lname);
         $this->lname = ucfirst(strtolower($this->lname));
         
         // remove white spaces from emails and lowercase for all letters
-        $this->email = str_replace('/\s+/', '', $this->email);
+        $this->email = str_replace('/\s/', '', $this->email);
+        $this->email = str_replace(' ', '', $this->email);
+        $this->email = str_replace("'", "''", $this->email);
         $this->email = strtolower($this->email);
         
     }
